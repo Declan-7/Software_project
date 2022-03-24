@@ -142,7 +142,7 @@ except requests.exceptions.RequestException as err:
 weather1 = r1.json()
 print(weather1)
 def weather_to_db1(text):
-    sleep(60*60)
+    time.sleep(60*60)
     weather1 = json.loads(text)
     #using index[0] gets the current hour as the api is updated everyhour
     vals = ((weather1).get('hourly')[0].get('dt'),
