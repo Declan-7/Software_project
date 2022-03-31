@@ -1,4 +1,3 @@
-import sqlalchemy as sql
 from sqlalchemy import create_engine
 import traceback
 import glob
