@@ -130,24 +130,24 @@ def availability_to_db(text):
 availability_to_db(r.text)
 
 
-metadata = sqla.MetaData(bind=engine)
-print(metadata)
-station = sqla.Table('station', metadata, autoload=True)
-print(station)
-availability = sqla.Table('availability', metadata, autoload=True)
-print(availability)
+## metadata = sqla.MetaData(bind=engine)
+## print(metadata)
+## station = sqla.Table('station', metadata, autoload=True)
+## print(station)
+## availability = sqla.Table('availability', metadata, autoload=True)
+## print(availability)
 
 
-import pandas as pd
-df = pd.read_sql_table("station", engine)
+## import pandas as pd
+## df = pd.read_sql_table("station", engine)
 
 
-display(df.head())
+## display(df.head())
 
-sql = "select count(*) from availability;"
-print(engine.execute(sql).fetchall())
+## sql = "select count(*) from availability;"
+## print(engine.execute(sql).fetchall())
 
 
-sql = "select name from station limit 10;"
-for row in engine.execute(sql):
-    print(row)
+## sql = "select name from station limit 10;"
+## for row in engine.execute(sql):
+    ## print(row)
