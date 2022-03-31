@@ -82,7 +82,7 @@ URL = "https://api.jcdecaux.com/vls/v1/stations?contract=dublin&apiKey=" + api_k
 try:
 # Make the get request
     r = requests.get(url=URL)
-    time.sleep(1*60)
+    time.sleep(5*60)
 except requests.exceptions.RequestException as err:
     print("SOMETHING WENT WRONG:", err)
     exit(1)
