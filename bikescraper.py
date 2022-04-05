@@ -1,153 +1,126 @@
-from sqlalchemy import sqla
-from sqlalchemy import create_engine
+# webscrapper.py
+import sys
+import datetime as dt
 import traceback
-import glob
-import os
-from pprint import pprint
-import simplejson as json
 import requests
-import time
-from IPython.display import display
-import pymysql
-import sql_metadata
+import pytz
+from mysql.connector import IntegrityError
+from mysql.connector import *
 from sqlalchemy import *
+from sqlalchemy import Table, Column, Integer, Float, String, DateTime
+from sqlalchemy import MetaData
+from sqlalchemy import create_engine
 import json
 
 
 
-URI="dbike.cvo8g1gt1fco.eu-west-1.rds.amazonaws.com"
-PORT="3306"
-DB = "dbike"
+
+APIKEY = "53c9b7d9148fef65635074fed863cc14f718219f"
 USER = "group15"
 PASSWORD = "declanmingbo"
-
-engine = create_engine("mysql+pymysql://{}:{}@{}:{}/{}".format(USER, PASSWORD, URI, PORT, DB), echo=True)
-sql = """CREATE DATABASE IF NOT EXISTS dbike;"""
-engine.execute(sql)
-
-for res in engine.execute("SHOW VARIABLES"):
-    print(res)
-    
-sql = """
-CREATE TABLE IF NOT EXISTS station (
-address VARCHAR(256) ,
-banking INTEGER,
-bike_stands INTEGER,
-bonus INTEGER,
-contract_name VARCHAR(256),
-name VARCHAR(256),
-number INTEGER,
-position_lat REAL,
-position_lng REAL,
-status VARCHAR(256)
-)
-"""
-
-try:
-    res = engine.execute ("DROP TABLE IF EXISTS station")
-    res = engine.execute(sql)
-    print(res)
-except Exception as e:
-    print(e)
-    
-    
-sql= """
-CREATE TABLE IF NOT EXISTS availability (
-number INTEGER,
-available_bikes INTEGER,
-available_bike_stands INTEGER,
-last_update INTEGER
-)
-"""
-try:
-    res = engine.execute ("DROP TABLE IF EXISTS availability")
-    res = engine.execute(sql)
-    print(res)
-except Exception as e:
-    print (e)
-    
-    
-    
-import requests 
-import traceback 
-import datetime
-import time
-from datetime import datetime
-import mysql
-import mysql.connector
-import sys
-api_key = "53c9b7d9148fef65635074fed863cc14f718219f"
-URL = "https://api.jcdecaux.com/vls/v1/stations?contract=dublin&apiKey=" + api_key
-
-try:
-# Make the get request
-    r = requests.get(url=URL)
-    time.sleep(5*60)
-except requests.exceptions.RequestException as err:
-    print("SOMETHING WENT WRONG:", err)
-    exit(1)
-stations = r.json()
+HOST = "dbike.cvo8g1gt1fco.eu-west-1.rds.amazonaws.com"
+PORT = "3306"
+DATABASE = "dbike"
 
 
-def stations_to_db(text):  
-    stations = json.loads(text)
-    print(type(stations), len(stations))
-    for station in stations:
-        print(station)
-        vals = (station.get('address'), 
-                int(station.get('banking')),
-                station.get('bike_stands'), 
-                int(station.get('bonus')),
-                station.get('contract_name'),
-                station.get('name'),
-                station.get('number'),
-                station.get('position').get('lat'),
-                station.get('position').get('lng'),
-                station.get('status'))
-       
-        engine.execute("INSERT INTO station values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", vals)
-        
+engine = create_engine(
+    f'mysql+mysqlconnector://group15:dbike.cvo8g1gt1fco.eu-west-1.rds.amazonaws.com/dbike', echo=False)
+connection = engine.connect()
+
+
+def write_to_db(table_name, values):
+    metadata = MetaData()
+    metadata.reflect(bind=engine)
+    table = metadata.tables.get(table_name)
+
+    with engine.connect() as connection:
+        for val in values:
+            try:
+                res = connection.execute(table.insert().values(val))
+            except IntegrityError as err:
+    return
+
+
+def initialise_db():
+    metadata = MetaData(bind=engine)
+
+    with engine.connect() as conn:
+        if engine.dialect.has_table(conn, "station") is False:
+            station = Table('station', metadata,
+                            Column('number', Integer, primary_key=True),
+                            Column('name', String(128)),
+                            Column('address', String(128)),
+                            Column('position_lat', Float),
+                            Column('position_lng', Float),
+                            Column('bike_stands', Integer),
+                            )
+
+            try:
+                metadata.create_all(engine)
+                # r = requests.get(STATIONS, params={"apiKey": APIKEY, "CONTRACT": NAME})
+                r = requests.get(
+                    "https://api.jcdecaux.com/vls/v1/stations?apiKey=53c9b7d9148fef65635074fed863cc14f718219f&contract=Dublin")
+
+                values = map(get_stations, r.json())
+                write_to_db("station", values)
+            except:
+                traceback.format_exc()
+
+        if engine.dialect.has_table(conn, "availability") is False:
+            availability = Table('availability', metadata,
+                                 Column('number', Integer, primary_key=True),
+                                 Column('last_update', DateTime, primary_key=True),
+                                 Column('available_bike_stands', Integer),
+                                 Column('available_bikes', Integer),
+                                 Column('status', String(128)))
+
+            try:
+                metadata.create_all(engine)
+            except:
+                traceback.formal_exc()
+
+        return
+
+
+def get_stations(s):
+    return {'number': s['number'], 'name': s['name'], 'address': s['address'], 'position_lat': s['position']['lat'], 'position_lng': s['position']['lng'], 'bike_stands': s['bike_stands']}
+
+
+def store_availability():
+    try:
+
+        #req = requests.get(STATIONS, params={"apikey": APIKEY, "contract": NAME})
+        req = requests.get(
+            "https://api.jcdecaux.com/vls/v1/stations?apiKey=53c9b7d9148fef65635074fed863cc14f718219f&contract=Dublin")
+
+        values = filter(lambda x: x is not None, map(get_availability, req.json()))
+        write_to_db('availability', values)
+    except:
+        traceback.format_exc()
 
     return
-stations_to_db(r.text)
 
 
+def get_availability(s):
+    if 'last_update' not in s or s['last_update'] is None:
+        return None
+    return {'number': int(s['number']), 'available_bike_stands': int(s['available_bike_stands']),
+            'available_bikes': int(s['available_bikes']),
+            'last_update': datetime.datetime.fromtimestamp(int(s['last_update'] / 1e3)), 'status': s['status']}
 
-def availability_to_db(text):  
-    stations = json.loads(text)
-    print(type(stations), len(stations))
-    for availability in stations:
-        print(availability)
-        
-        vals = (availability.get('number'),
-               availability.get('available_bikes'),
-               availability.get('available_bike_stands'),
-               availability.get('last_update'))
-        
-        engine.execute("INSERT INTO availability values(%s,%s,%s,%s)", vals)
+
+def main():
+    initialise_db()
+
+    while True:
+        now = dt.datetime.now(tz=pytz.timezone('Europe/Dublin')).time()
+        if now >= dt.time(6, 0) or now <= dt.time(0, 30):  # exclude 12:30 = 06:00
+            store_availability()
+
+        time.sleep(5 * 60)
 
     return
-availability_to_db(r.text)
 
 
-## metadata = sqla.MetaData(bind=engine)
-## print(metadata)
-## station = sqla.Table('station', metadata, autoload=True)
-## print(station)
-## availability = sqla.Table('availability', metadata, autoload=True)
-## print(availability)
-
-
-## import pandas as pd
-## df = pd.read_sql_table("station", engine)
-
-
-## display(df.head())
-
-## sql = "select count(*) from availability;"
-## print(engine.execute(sql).fetchall())
-
-
-## sql = "select name from station limit 10;"
-## for row in engine.execute(sql):
-    ## print(row)
+if __name__ == "__main__":
+    main()
