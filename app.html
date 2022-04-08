@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Map</title>
+<form type="dropdown"></form>
+<h3>Station:    </h3> <select name="Station" id="Station" size="10" >
+    <option  value="" selected="selected" id="stationid">Select Station: </option>
+  </select>
+      <button id="submit" value="Submit"> Submit </button>
+<br> 
+      
+
+      <div id=station_selection> </div>
+
+ <p id="id01"> </p>     
+    
+    <script>
+     var map;
+    
+    
+
+
+function initMap() {
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: 53.349835, lng: -6.260310 },
+    zoom: 12,
+  });
+}
+fetch("/stations").then(response => {
+           return response.json();
+    }).then(info => {
+    var infowindow = new google.maps.InfoWindow();
+    var subjectSel = document.getElementById("stationid");
+    var stat = ""
+    
+
+stationslist = []
+   info.forEach(station => {
+                
+       
+                stationslist.push(station)
+               // subjectSel.options = new Option(station.name)
+                var clicked = false
+                var current = false
+                var c = station.available_bike_stands
+                var d = station.available_bikes 
+                var q = (station.position_lat)
+                var f = (station.position_lng)
+                if (c > d) {
+                    var x = "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                }
+                else {
+                    var x = "http://maps.google.com/mapfiles/ms/icons/red.png"
+                }
+                const marker = new google.maps.Marker({
+                icon: {
+                    url: x
+                  },                                     
+                position: { lat: parseFloat(q), lng: parseFloat(f)},
+                map: map,
+
+                })
+                const list = d
+             
+                stat += "<option value=" + station.number + ">" + station.name + "</option><br></select>";
+           document.getElementById("Station").innerHTML = stat;
+           
+           
+            var form = document.getElementById("Station");
+
+            document.getElementById("submit").addEventListener("click", function () {
+            var t = "";
+            t = "<p>'"+(station.name).selectedIndex+"'</p>" ;
+            //document.getElementById("Station").selectedIndex=t;
+            var x =document.getElementById("Station").selectedIndex;
+            var u = document.getElementById("Station").options;
+            document.getElementById("id01").innerHTML = "<p>"+info[x].name+"</p>"+"<p>"+info[x].available_bike_stands+"</p>" +"<p>"+info[x].available_bikes+"</p>";
+                
+
+            })
+                
+     
+               marker.addListener("click", () => {
+                if (clicked==false) {
+                var content= "<h3>" + station.name + "</h3>"
+                + "<p><b>Available Bikes: </b>" + station.available_bikes + "</p>"
+                + "<p><b>Available Stands: </b>" + station.available_bike_stands + "</p>"
+                + "<p><b>Parking Slots: </b>" + station.available_bike_stands + "</p>"
+                + "<p><b>Status: </b>" + station.status + "</p>";
+                infowindow.setContent(content);
+                infowindow.open(map, marker);
+                clicked = true;
+                }
+
+
+
+                
+            
+                
+          
+            else if (clicked==true) {
+                    infowindow.close();
+                    clicked=false;
+                }})
+                                  
+ 
+             })
+
+
+
+   })
+       
+   
+   //document.getElementById("stationid").
+           // document.getElementById("stationid").selectedIndex
+    
+
+//function menu(){
+  //  fetch("/dropdown").then(reponse => {
+  //      return response.json();
+  //  }).then(info => {
+
+  //      info.forEach(station =>
+                     
+                     
+                     
+
+                     
+                     
+//)})
+
+        
+//
+        
+        
+            
+        
+            //    weeklyChart(station.number);
+            //    hourlyChart(station.number);
+            
+        
+    
+        
+        
+    </script>
+    <!-- jsFiddle will insert css and js -->
+     
+   
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <style>
+     
+      #map {
+  height: 100%;
+}
+
+/* Optional: Makes the sample page fill the window. */
+html,
+body {
+  height: 80%;
+  margin: 10%;
+  padding: 0;
+}
+     
+    </style>  
+   
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUUtoAUApYxHvPVCN6SxFtaJSVcplSXNI&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+  </body>
+</html>
