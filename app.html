@@ -1,19 +1,33 @@
 
 <!DOCTYPE html>
+
+
+
 <html>
+
+
   <head>
     <title>Map</title>
+      <link rel="stylesheet" src="flask.css">
+
+  </head>
+<body>
+    
+<h1>Dublin Bikes</h1>
+<div id="u">
 <form type="dropdown"></form>
 <h3>Station:    </h3> <select name="Station" id="Station" size="10" >
-    <option  value="" selected="selected" id="stationid">Select Station: </option>
+    <option  value="--Select Station--" selected="selected" id="stationid">Select Station: </option>
   </select>
       <button id="submit" value="Submit"> Submit </button>
 <br> 
       
 
       <div id=station_selection> </div>
-
+    </div>
  <p id="id01"> </p>     
+    
+    
     
     <script>
      var map;
@@ -32,9 +46,8 @@ fetch("/stations").then(response => {
     }).then(info => {
     var infowindow = new google.maps.InfoWindow();
     var subjectSel = document.getElementById("stationid");
-    var stat = ""
     
-
+    var stat =  "<option>---------------------Select Station------------------</option><br></select>";
 stationslist = []
    info.forEach(station => {
                 
@@ -75,7 +88,7 @@ stationslist = []
             //document.getElementById("Station").selectedIndex=t;
             var x =document.getElementById("Station").selectedIndex;
             var u = document.getElementById("Station").options;
-            document.getElementById("id01").innerHTML = "<p>"+info[x].name+"</p>"+"<p>"+info[x].available_bike_stands+"</p>" +"<p>"+info[x].available_bikes+"</p>";
+            document.getElementById("id01").innerHTML = "<p>Station Selected:  "+info[x-1].name+"</p>"+"<p>Available Bike Stands:  "+info[x-1].available_bike_stands+"</p>" +"<p>Available Bikes:  "+info[x-1].available_bikes+"</p>";
                 
 
             })
@@ -112,23 +125,10 @@ stationslist = []
    })
        
    
-   //document.getElementById("stationid").
-           // document.getElementById("stationid").selectedIndex
+     //       document.getElementById("stationid").selectedIndex
     
 
-//function menu(){
-  //  fetch("/dropdown").then(reponse => {
-  //      return response.json();
-  //  }).then(info => {
-
-  //      info.forEach(station =>
-                     
-                     
-                     
-
-                     
-                     
-//)})
+        
 
         
 //
@@ -136,7 +136,6 @@ stationslist = []
         
             
         
-            //    weeklyChart(station.number);
             //    hourlyChart(station.number);
             
         
@@ -147,26 +146,6 @@ stationslist = []
     <!-- jsFiddle will insert css and js -->
      
    
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       <style>
      
       #map {
@@ -176,21 +155,36 @@ stationslist = []
 /* Optional: Makes the sample page fill the window. */
 html,
 body {
+  
   height: 80%;
-  margin: 10%;
+  margin-left: 10%;
+  margin-right:10%;
   padding: 0;
+  color:blue;
 }
-     
+ 
+          h3 {
+              color:lightsalmon;
+          }
+          
+          h1 {
+              margin:auto;
+              margin-left:42%;
+
+          }
+          
+          #u {
+              margin-left:35%
+          }
     </style>  
    
-  </head>
-  <body>
+  
     <div id="map"></div>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUUtoAUApYxHvPVCN6SxFtaJSVcplSXNI&callback=initMap&libraries=&v=weekly"
-      async
-    ></script>
-  </body>
+      async>
+    </script>
+</body>
 </html>
