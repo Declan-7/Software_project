@@ -14,7 +14,6 @@ from sqlalchemy import *
 import json
 
 
-
 URI="dbike.cvo8g1gt1fco.eu-west-1.rds.amazonaws.com"
 PORT="3306"
 DB = "dbike"
@@ -50,7 +49,6 @@ try:
 except Exception as e:
     print(e)
     
-    
 sql= """
 CREATE TABLE IF NOT EXISTS availability (
 number INTEGER,
@@ -67,14 +65,10 @@ except Exception as e:
     print (e)
     
     
-    
-import requests 
 import traceback 
 import datetime
 import time
 from datetime import datetime
-import mysql
-import mysql.connector
 import sys
 api_key = "53c9b7d9148fef65635074fed863cc14f718219f"
 URL = "https://api.jcdecaux.com/vls/v1/stations?contract=dublin&apiKey=" + api_key
@@ -82,7 +76,7 @@ URL = "https://api.jcdecaux.com/vls/v1/stations?contract=dublin&apiKey=" + api_k
 try:
 # Make the get request
     r = requests.get(url=URL)
-    ## time.sleep(1*60)
+    time.sleep(5*60)
 except requests.exceptions.RequestException as err:
     print("SOMETHING WENT WRONG:", err)
     exit(1)
@@ -112,7 +106,6 @@ def stations_to_db(text):
 stations_to_db(r.text)
 
 
-
 def availability_to_db(text):  
     stations = json.loads(text)
     print(type(stations), len(stations))
@@ -128,26 +121,3 @@ def availability_to_db(text):
 
     return
 availability_to_db(r.text)
-
-
-metadata = sqla.MetaData(bind=engine)
-print(metadata)
-station = sqla.Table('station', metadata, autoload=True)
-print(station)
-availability = sqla.Table('availability', metadata, autoload=True)
-print(availability)
-
-
-import pandas as pd
-df = pd.read_sql_table("station", engine)
-
-
-display(df.head())
-
-sql = "select count(*) from availability;"
-print(engine.execute(sql).fetchall())
-
-
-sql = "select name from station limit 10;"
-for row in engine.execute(sql):
-    print(row)
