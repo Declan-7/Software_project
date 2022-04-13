@@ -12,9 +12,11 @@
 
   </head>
 <body>
-    
+<div id="code1">
 <h1>Dublin Bikes</h1>
 <div id="u">
+    
+<div id="id00">Last Updated: </div>
 <form type="dropdown"></form>
 <h3>Station:    </h3> <select name="Station" id="Station" size="10" >
     <option  value="--Select Station--" selected="selected" id="stationid">Select Station: </option>
@@ -25,9 +27,12 @@
 
       <div id=station_selection> </div>
     </div>
+<div id="id03"></div>
  <p id="id01"> </p>     
+</div>
     
     
+<div id = "id04"> </div>
     
     <script>
      var map;
@@ -51,7 +56,7 @@ fetch("/stations").then(response => {
 stationslist = []
    info.forEach(station => {
                 
-       
+            
                 stationslist.push(station)
                // subjectSel.options = new Option(station.name)
                 var clicked = false
@@ -64,7 +69,7 @@ stationslist = []
                     var x = "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
                 }
                 else {
-                    var x = "http://maps.google.com/mapfiles/ms/icons/red.png"
+                    var x = "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
                 }
                 const marker = new google.maps.Marker({
                 icon: {
@@ -75,24 +80,39 @@ stationslist = []
 
                 })
                 const list = d
+                
+                document.getElementById("id00").innerHTML = "<tr><th>Available Bikes: </th><td>"+Date(station.last_update);
              
                 stat += "<option value=" + station.number + ">" + station.name + "</option><br></select>";
            document.getElementById("Station").innerHTML = stat;
            
-           
+            var space ="<br><br><br><br><br>" 
+            document.getElementById("id03").innerHTML=space;
             var form = document.getElementById("Station");
 
             document.getElementById("submit").addEventListener("click", function () {
             var t = "";
-            t = "<p>'"+(station.name).selectedIndex+"'</p>" ;
+          //  t = "<p>'"+(station.name).selectedIndex+"'</p>" ;
             //document.getElementById("Station").selectedIndex=t;
             var x =document.getElementById("Station").selectedIndex;
             var u = document.getElementById("Station").options;
-            document.getElementById("id01").innerHTML = "<p>Station Selected:  "+info[x-1].name+"</p>"+"<p>Available Bike Stands:  "+info[x-1].available_bike_stands+"</p>" +"<p>Available Bikes:  "+info[x-1].available_bikes+"</p>";
+            if (x>=1) {
+            document.getElementById("id01").innerHTML = "<table><tr><th>Station Selected:     </th><td>"+info[x-1].name+"</td></tr><tr><th> Available Bike Stands:                  </th><td>"+info[x-1].available_bike_stands+"</td></tr><tr><th>Available Bikes:     </th><td>"+info[x-1].available_bikes+"</td></tr></table>";
+            }
+            else {
+                document.getElementById("id01").innerHTML="";
+            }
+            
+                
+            var space2 ="<br><br><br><br><br>" 
+            document.getElementById("id04").innerHTML=space2;
+            //p = "<table><th>Highest Rate Per 100,000: </th><th>Lowest Rate Per 100,000:  </th> "
+        //p+= "<tr><td>"+county_max+"</td><td>"+county_min+"</td></tr>"
+        //document.getElementById("id011").innerHTML = p
                 
 
             })
-                
+                var date = Date(station.last_update)
      
                marker.addListener("click", () => {
                 if (clicked==false) {
@@ -100,7 +120,7 @@ stationslist = []
                 + "<p><b>Available Bikes: </b>" + station.available_bikes + "</p>"
                 + "<p><b>Available Stands: </b>" + station.available_bike_stands + "</p>"
                 + "<p><b>Parking Slots: </b>" + station.available_bike_stands + "</p>"
-                + "<p><b>Status: </b>" + station.status + "</p>";
+                + "<p><b>Status: </b>" + station.status + "</p>" +"<p><b>Time: </b>" + date + "</p>";
                 infowindow.setContent(content);
                 infowindow.open(map, marker);
                 clicked = true;
@@ -122,7 +142,9 @@ stationslist = []
 
 
 
-   })
+   }).catch(function () {
+            console.log("error");
+        })
        
    
      //       document.getElementById("stationid").selectedIndex
@@ -176,6 +198,40 @@ body {
           #u {
               margin-left:35%
           }
+          
+          #code1 {
+              color:gray
+          }
+          
+          
+          
+        tr {
+          background-color: #999681;
+          }
+    
+    
+
+          td {
+            border: (9,8,4);
+            text-align: left;
+            padding: 8px;
+            color:black;
+          }
+              
+          th {
+              color: black;
+                  
+              }
+          
+          
+          
+          table{
+             margin-left: auto;
+             margin-right: auto;
+
+          }
+}
+
     </style>  
    
   
