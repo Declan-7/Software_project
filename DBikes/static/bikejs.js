@@ -15,7 +15,11 @@ function prediction() {
     })
                  
              }
- document.getElementById("id01").innerHTML = "<table><tr><th>Station Selected:     </th><td>  </td><th> Available Bike Stands:                  </th><td></td><th>Available Bikes:     </th><td></td></tr></table>";
+ document.getElementById("id01").innerHTML = "<table><tr><th>Station Selected: </th><td>  N/A </td><th> Available Bike Stands:                  </th><td> N/A </td><th>Available Bikes:     </th><td> N/A </td></tr></table>";
+
+
+
+
 
 
 function initMap() {
@@ -24,6 +28,21 @@ function initMap() {
     zoom: 12,
   });
 }
+fetch("/weather").then(response => {
+    return response.json();
+    }).then(weather => {
+    weather.forEach(weather => {
+        var f =weather.feels_like;
+       // document.getElementById("weather").innerHTML=f;
+         document.getElementById("weather").innerHTML = "<table><tr><th>Temperature:     </th><td>"  +weather.temp+ "&deg;C </td><th> Humidity:  </th><td>" + weather.humidity+ "%</td><th>Windspeed:  </th><td>"+weather.wind_speed +     "km/h</td><th>Weather Description</th><td>"+weather.weather_description+"</td></tr></table>";
+    
+})})
+
+
+
+
+
+
 fetch("/stations").then(response => {
            return response.json();
     }).then(info => {
@@ -90,7 +109,7 @@ stationslist = []
             document.getElementById("id01").innerHTML = "<table><tr><th>Station Selected:     </th><td>"+info[x-1].name+"  No ( "+info[x-1].number+" ) </td><th> Available Bike Stands:                  </th><td>"+info[x-1].available_bike_stands+"</td><th>Available Bikes:     </th><td>"+info[x-1].available_bikes+"</td></tr></table>";
             }
             else {
-                document.getElementById("id01").innerHTML="<table><tr><th>Station Selected:     </th><td>  Station </td><th> Available Bike Stands:                 </th><td></td><th>Available Bikes:     </th><td></td></tr></table>";
+                document.getElementById("id01").innerHTML="<table><tr><th>Station Selected:     </th><td> N/A </td><th> Available Bike Stands:                  </th><td>N/A</td><th>Available Bikes:     </th><td>N/A</td></tr></table>";
             }
             
                 

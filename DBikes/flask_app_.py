@@ -35,15 +35,23 @@ def station_sql():
          return df.to_json(orient="records")
          json.dump(df)
 #      <link rel="stylesheet"  type="text/css" href="/static/cssbike.css">
- 
+@app.route("/weather")
+def wthr():
+    engine2 = create_engine(
+    f"mysql+mysqlconnector://{dbike_info.USER}:{dbike_info.PASSWORD}@{dbike_info.URI}" f":3306/{dbike_info.DB}", echo=True)
+    
+    query2= "SELECT * FROM dbike.weather"
+    df2 = pd.read_sql(query2,engine2)   
+    return df2.to_json(orient="records")
+    json.dump(df2)
 
         
         
-@app.route("/weather")
-def weather():
-        engine = create_engine(
-        f"mysql+pymysql://{}:{}@{}:{}/{}")
-        sql2 = "SELECT * from dbike.weather_Dublin;"
+#@app.route("/weather")
+#def weather():
+ #       engine = create_engine(
+  #      f"mysql+pymysql://{}:{}@{}:{}/{}")
+   #     sql2 = "SELECT * from dbike.weather_Dublin;"
         
   #      df2 = pd.read_sql(sql2, engine)
 
