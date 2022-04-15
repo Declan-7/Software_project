@@ -94,4 +94,31 @@ def write_to_db(text):
         print("Insert wrong")
     
     db.close()
+    
+DATABASE_URL="dbike.cvo8g1gt1fco.eu-west-1.rds.amazonaws.com"
+PORT= 3306
+DB = "dbike"
+USER = "group15"
+PASSWORD = "declanmingbo"
+while True:
+    try:
+        db = pymysql.connect(
+            host=DATABASE_URL,
+            user=USER,
+            password=PASSWORD,
+            port=PORT,
+            database=DB)
+        cursor = db.cursor()  
+            
+        create_table()
 
+        now = datetime.now()
+        r = requests.get(WEATHER_URL, params = parameters)
+        print(r,now)
+            
+        write_to_db(r.text)
+            
+        time.sleep(5*60)
+        
+    except:
+        print(traceback.format_exc())  
