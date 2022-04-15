@@ -1,0 +1,407 @@
+
+<!DOCTYPE html>
+
+
+
+<html>
+
+
+  <head>
+    <title>Map</title>
+      <link rel="stylesheet" src="flask.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+  </head>
+<body>
+<div id="code1">
+<h1>Dublin Bikes</h1>
+<div id="u">
+    
+<div id="id00">Last Updated: </div>
+<div id="weather"></div>
+<div id="selecttable">
+<form type="dropdown" id="current"></form>
+<h3>Select Station to Show Current Info   </h3> <select name="Station" id="Station" size="10" >
+    <option  value="--Select Station--" selected="selected" id="stationid">Select Station: </option>
+  </select>
+      <button id="submit" value="Submit"> Submit </button>
+    </div>
+<br> 
+      
+
+      <div id=station_selection> </div>
+    </div>
+<div id="id03"></div>
+ <p id="id01"> </p>     
+</div>
+  
+    
+<!-- <div class = "tab-pane">    
+<input id="param3" type="time" name="param3">
+<input id="param1" type="date" name="param1">
+<input id="param2" required= "required" name="param2">
+<button type="submit" class ="btn btn-primary btn-block" onclick = "prediction()">Predict: </button>
+</div> -->
+     
+    
+    <div class="tab-content">
+
+                    <div class="tab-pane">
+                        Date:   <input type="date" id="param1" name="param1" value="2022-04-14">
+                        Time:  <input type="time" id="param3" name="param3" value="19:00" min="00:00" max="23:00" required>
+                        Station: <input type="number" id="param2" name="param2" required><button id="bt" onclick="prediction()">Show available bikes</button>
+                        <br>
+                        <h2> Number of available bikes at  selected date and time:  </h2><h2  id="prediction-bikes"> 
+                        </h2>
+                    </div>
+                </div>
+    
+    
+    
+    
+    
+    
+    
+    
+<div id = "id04"> </div>
+    
+    <script>
+     
+function prediction() {
+                 var station= document.getElementById("param2").value;
+                 var date = document.getElementById("param1").value;
+                 var time = document.getElementById("param3").value;
+
+
+
+                 
+                 
+                 $.getJSON("http://127.0.0.1:5000/prediction_/" + station+ "/"+ date + "/" + time, function (info) {
+                 console.log(info);
+                 document.getElementById("prediction-bikes").innerHTML = info;
+    })
+                 
+             }
+            
+        
+        
+        
+        
+        
+        
+var map;
+    
+    
+
+
+function initMap() {
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: 53.349835, lng: -6.260310 },
+    zoom: 12,
+  });
+}
+fetch("/stations").then(response => {
+           return response.json();
+    }).then(info => {
+    var infowindow = new google.maps.InfoWindow();
+    var subjectSel = document.getElementById("stationid");
+    
+    
+    
+    
+    
+    
+
+    
+    
+    var stat =  "<option id= list1>---------------------Select Station------------------</option><br></select>";
+stationslist = []
+   info.forEach(station => {
+                
+            
+                stationslist.push(station)
+               // subjectSel.options = new Option(station.name)
+                var clicked = false
+                var current = false
+                var c = station.available_bikes
+                var d = station.available_bikes+station.available_bike_stands
+                var q = (station.position_lat)
+                var f = (station.position_lng)
+                if (c > d/2) {
+                    var x = "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                }
+                else {
+                    var x = "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                }
+                const marker = new google.maps.Marker({
+                icon: {
+                    url: x
+                  },                                     
+                position: { lat: parseFloat(q), lng: parseFloat(f)},
+                map: map,
+
+                })
+                //const list = d
+               // var s = station.last_update;
+                
+       
+       
+       
+       
+       
+                document.getElementById("id00").innerHTML = "<br><br><tr><th>Last Updated: </th><td>"+Date(station.last_update);
+             
+                stat += "<option value=" + station.number + ">" + station.name +"   (No."+station.number+")" + "</option><br></select>";
+           document.getElementById("Station").innerHTML = stat;
+           
+            var space ="<br><br><br><br><br>" 
+            document.getElementById("id03").innerHTML=space;
+            var form = document.getElementById("Station");
+
+            document.getElementById("submit").addEventListener("click", function () {
+            var t = "";
+          //  t = "<p>'"+(station.name).selectedIndex+"'</p>" ;
+            //document.getElementById("Station").selectedIndex=t;
+            var x =document.getElementById("Station").selectedIndex;
+            var u = document.getElementById("Station").options;
+            if (x>=1) {
+            document.getElementById("id01").innerHTML = "<table><tr><th>Station Selected:     </th><td>"+info[x-1].name+"  No ( "+info[x-1].number+" ) </td><th> Available Bike Stands:                  </th><td>"+info[x-1].available_bike_stands+"</td><th>Available Bikes:     </th><td>"+info[x-1].available_bikes+"</td></tr></table>";
+            }
+            else {
+                document.getElementById("id01").innerHTML="";
+            }
+            
+                
+            var space2 ="<br><br><br><br><br>" 
+            document.getElementById("id04").innerHTML=space2;
+            //p = "<table><th>Highest Rate Per 100,000: </th><th>Lowest Rate Per 100,000:  </th> "
+        //p+= "<tr><td>"+county_max+"</td><td>"+county_min+"</td></tr>"
+        //document.getElementById("id011").innerHTML = p
+                
+
+            })
+                var date = Date(station.last_update)
+     
+               marker.addListener("click", () => {
+                if (clicked==false) {
+                var content= "<h3>" + station.name + "</h3>"
+                + "<p><b>Available Bikes: </b>" + station.available_bikes + "</p>"
+                + "<p><b>Available Stands: </b>" + station.available_bike_stands + "</p>"
+                + "<p><b>Parking Slots: </b>" + station.available_bike_stands + "</p>"
+                + "<p><b>Status: </b>" + station.status + "</p>" +"<p><b>Time: </b>" + date + "</p>";
+                infowindow.setContent(content);
+                infowindow.open(map, marker);
+                clicked = true;
+                }
+
+
+
+                
+            
+                
+          
+            else if (clicked==true) {
+                    infowindow.close();
+                    clicked=false;
+                }
+                                  
+
+   
+   
+   
+   
+   
+    
+   })})
+
+
+
+   }).catch(function () {
+            console.log("error");
+        })
+       
+   
+     //       document.getElementById("stationid").selectedIndex
+    
+
+        
+
+        
+//
+        
+        
+            
+        
+            //    hourlyChart(station.number);
+            
+        
+    
+        
+        
+    </script>
+    <!-- jsFiddle will insert css and js -->
+     
+   
+      <style>
+     
+      #map {
+  height: 100%;
+}
+
+/* Optional: Makes the sample page fill the window. */
+html,
+body {
+  
+  height: 80%;
+  margin-left: 15%;
+  margin-right:15%;
+  padding: 0;
+  background-color: #F0F0F0;
+}
+ 
+          h3 {
+              color:lightsalmon;
+          }
+          
+          h1 {
+              margin:auto;
+              margin-left:42%;
+
+          }
+          
+          #u {
+              margin-left:35%
+          }
+          
+          #code1 {
+              color:;
+          }
+          
+          
+          
+        tr {
+          background-color: #92a8d1	;
+          }
+    
+    
+
+          td {
+            border: (9,8,4);
+            text-align: left;
+            padding: 20px;
+            color:black;
+          }
+              
+          th {
+              color: black;
+                  
+              }
+          
+          
+          
+          table{
+             margin-right: 20%;
+             margin-left:20%;
+
+          }
+          
+          
+          #id00 {
+              margin-left: auto;
+              margin-right: auto;
+          }
+          
+          
+          .tab-pane {
+              color:#999
+              width: 300px;
+              border: 15px;
+              padding: 50px;
+              margin: 20px;
+              background: #FFF0F5;
+              
+          }
+        #bt {
+          transition-duration: 0.4s;
+          color: FFDEAD
+           }
+
+        #bt:hover {
+           background-color: #FFA500; 
+           color: lightyellow;
+           border-radius: 12px;
+
+}
+          
+          
+          
+          #submit {
+          transition-duration: 0.4s;
+          color: FFDEAD;
+          border-radius:12px;
+          
+           }
+
+         #submit:hover {
+             background-color: #FFA500; /* Green */
+              color: white;
+}
+          
+          
+          
+          
+    .Station {
+        position: relative;
+        display: block;
+        width: 70%;
+        height: 3em;
+        line-height: 3;
+        background: #2C3E50;
+        overflow: hidden;
+        border-radius: .25em;
+        margin-right:25;
+    }
+     
+    select {
+        width: 90%;
+        height: 40%;
+        margin-right: 48%;
+        padding: 0 0 0 .5em;
+        color: #aaa;
+        cursor: pointer;
+    }
+          
+    h2 {
+           color:cadetblue;   
+          }
+     
+    #list1 {
+            margin-right:40%;  
+          }
+          
+          
+    #selecttable {
+        margin-right:38%;
+          }
+          
+          
+          #current {
+              margin-right: 70%;
+          }
+
+
+    </style>  
+   
+  
+    <div id="map"></div>
+    
+    
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUUtoAUApYxHvPVCN6SxFtaJSVcplSXNI&callback=initMap&libraries=&v=weekly"
+      async>
+    </script>
+</body>
+</html>

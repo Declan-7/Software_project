@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Map</title>
+<h3>Station:    </h3> <select name="Station" id="Station" size="10" >
+    <option  value="" selected="selected" id="stationid">Select Station: </option>
+  </select>
+<br>      
+      
+
+ <p id="id01"> </p>     
+    
+    <script>
+     var map;
+    
+    
+
+
+async function initMap() {
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: 53.349835, lng: -6.260310 },
+    zoom: 12,
+  });
+//const response = await fetch ('/stations');
+//const data = await response .json();
+//console.log(data)
+//const database = new Datastore('database.db');
+//database.loadDatabase();
+fetch('/stations').then(response =>{
+    console.log(response);
+    return response.info();
+}).then(response => {
+    console.log(response);
+
+    
+    document.getElementById("id01").innerHTML=response;
+
+    data = request.body;
+    const timestamp = Date.now();
+    data.timestamp = timestamp;
+    database.insert(data);
+
+
+stationslist = [];
+
+fetch("/stations") 
+var x = response.json();
+var infowindow = new google.maps.InfoWindow();
+var subjectSel = document.getElementById("stationid");
+
+
+})}
+
+    </script>
+    <!-- jsFiddle will insert css and js -->
+     
+   
+   
+      
+ 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <style>
+     
+      #map {
+  height: 100%;
+}
+
+/* Optional: Makes the sample page fill the window. */
+html,
+body {
+  height: 80%;
+  margin: 10%;
+  padding: 0;
+}
+     
+    </style>  
+   
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUUtoAUApYxHvPVCN6SxFtaJSVcplSXNI&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+  </body>
+</html>

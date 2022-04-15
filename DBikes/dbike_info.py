@@ -1,0 +1,6 @@
+URI="dbike.cvo8g1gt1fco.eu-west-1.rds.amazonaws.com"
+PORT="3306"
+DB = "dbike"
+USER = "group15"
+PASSWORD = "declanmingbo"
+APIKEY = "53c9b7d9148fef65635074fed863cc14f718219f"

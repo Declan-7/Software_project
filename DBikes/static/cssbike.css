@@ -1,0 +1,172 @@
+     
+#map {
+  height: 100%;
+  width:=100%;
+}
+
+/* Optional: Makes the sample page fill the window. */
+html,
+body {
+  
+  height: 80%;
+  margin-left: 10%;
+  margin-right:10%;
+  padding: 0;
+  background-color: #F0F0F0;
+}
+ 
+          h3 {
+              color:lightsalmon;
+          }
+          
+          h1 {
+              margin:auto;
+              margin-left:42%;
+
+          }
+          
+          #u {
+              margin-left:35%
+          }
+          
+          #code1 {
+              color:;
+          }
+          
+          
+          
+        tr {
+          background-color: #92a8d1	;
+          border-bottom : 5%;
+          }
+    
+    
+
+          td {
+            border: (10,8,4);
+            border-right: 20px;
+            border-left: 20px;
+            text-align: left;
+            color:black;
+            border-spacing:30px;
+          }
+         .table td, .table th {
+          font-size: 30px;
+    }
+              
+          th {
+              color: black;
+              border-spacing:30px;
+              }
+          
+          
+          
+          table{
+             margin-right: 15%;
+             margin-left:15%;
+
+          }
+          
+          
+          #id00 {
+              margin-left: auto;
+              margin-right: auto;
+          }
+          
+          
+          .tab {
+              color:#999
+              width: 300px;
+              border: 15px;
+              padding: 50px;
+              margin: 20px;
+              background: #FFF0F5;
+              
+          }
+        #bt {
+          transition-duration: 0.4s;
+          color: FFDEAD
+           }
+
+        #bt:hover {
+           background-color: #FFA500; 
+           color: lightyellow;
+           border-radius: 12px;
+
+}
+          
+          
+          
+          #submit {
+          transition-duration: 0.4s;
+          color: FFDEAD;
+          border-radius:12px;
+          
+           }
+
+         #submit:hover {
+             background-color: #FFA500; /* Green */
+              color: white;
+}
+          
+          
+          
+          
+    .Station {
+        position: relative;
+        display: block;
+        width: 70%;
+        height: 3em;
+        line-height: 3;
+        background: #2C3E50;
+        overflow: hidden;
+        border-radius: .25em;
+        margin-right:25;
+    }
+     
+    select {
+        width: 90%;
+        height: 40%;
+        margin-right: 48%;
+        padding: 0 0 0 .5em;
+        color: #aaa;
+        cursor: pointer;
+    }
+          
+    h2 {
+           color:cadetblue;   
+          }
+     
+    #list1 {
+          }
+          
+          
+    #selecttable {
+        margin-right:32%;
+          }
+          
+          
+          #current {
+              margin-right: 70%;
+          }
+
+
+#id01 {
+    background: #89a9d1;
+    margin-left:16%;
+    margin-right: 16%;
+    
+}
+
+#tabcontent {
+    margin-left:15%;
+    margin-right:15%;
+}
+#textinbox {
+    margin-left: 14%;
+    margin-right: 14%;
+}
+#prediction-bikes {
+    margin-left: 10%;
+    margin-right: 10%;
+}
