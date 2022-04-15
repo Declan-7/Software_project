@@ -1,6 +1,6 @@
      
 #map {
-  height: 70%;
+  height: 55%;
   width:80%;
   margin-left:12%;
 }
@@ -9,20 +9,22 @@
 html,
 body {
   
-  height: 80%;
-  margin-left: 10%;
+  height: 900px;
+  margin-left: 12%;
   margin-right:10%;
   padding: 0;
   background-color: #F0F0F0;
 }
  
-          h3 {
+          #h3i {
               color:lightsalmon;
+              margin-left:28%;
+
           }
           
           h1 {
               margin:auto;
-              margin-left:42%;
+              margin-left:38%;
 
           }
           
@@ -99,8 +101,9 @@ body {
           #submit {
           transition-duration: 0.4s;
           color: FFDEAD;
-          border-radius:12px;
-          
+          border-radius:8px;
+          margin-left: 49%;
+          padding:4px;
            }
 
          #submit:hover {
@@ -111,22 +114,23 @@ body {
           
           
           
-    .Station {
+    #Station {
         position: relative;
         display: block;
-        width: 70%;
+        width: 40%;
+        margin-left: 
         height: 3em;
         line-height: 3;
-        background: #2C3E50;
         overflow: hidden;
         border-radius: .25em;
         margin-right:25;
     }
      
     select {
-        width: 90%;
-        height: 40%;
-        margin-right: 48%;
+        width: 40%;
+        height: 60%;
+        margin-right:10%;
+        margin-left:31%;
         padding: 0 0 0 .5em;
         color: #aaa;
         cursor: pointer;
@@ -141,8 +145,8 @@ body {
           
           
     #selecttable {
-        margin-right:18%;
-        margin-left:18%;
+        margin-right:70%;
+        margin-left:100px;
         
           }
           

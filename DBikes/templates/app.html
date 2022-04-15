@@ -20,14 +20,16 @@
 <div id="u">
 <div id="id00"></div>
 <br><br>
-<div id="weather"></div>
+<div id="weather"> </div>
+<vr
 <div id="selecttable">
-<form type="dropdown" id="current"></form>
-<h3>Select Station to Show Current Info   </h3> <select name="Station" id="Station" size="10" >
+     <form type="dropdown" id="current"></form>
+     <h3 id="h3i">Select Station to Show Current Info:   </h3> <select name="Station" id="Station" size="10" >
     <option  value="--Select Station--" selected="selected" id="stationid">Select Station: </option>
-  </select>
+     </select>
+      <br>
       <button id="submit" value="Submit"> Submit </button>
-    </div>
+</div>
 <br> 
       
 
@@ -35,7 +37,6 @@
     </div>
 <div id="id03"></div>
  <p id="id01"> </p>     
-</div>
   
     
 <div id = "id04"> </div>
@@ -50,7 +51,7 @@
                     <div class="tab">
                         Date:   <input type="date" id="param1" name="param1" value="2022-04-14">
                         Time:  <input type="time" id="param3" name="param3" value="19:00" min="00:00" max="23:00" required>
-                        Station: <input type="number" id="param2" name="param2" required><button id="bt" onclick="prediction()">Show available bikes</button>
+                        Station No.: <input type="number" id="param2" name="param2" required><button id="bt" onclick="prediction()">Show available bikes</button>
                         <br>
                         <h2 id="textinbox"> Number of available bikes at  selected date and time:  </h2><h2  id="prediction-bikes"> 
                         </h2>

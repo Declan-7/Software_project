@@ -45,18 +45,7 @@ def wthr():
     return df2.to_json(orient="records")
     json.dump(df2)
 
-        
-        
-#@app.route("/weather")
-#def weather():
- #       engine = create_engine(
-  #      f"mysql+pymysql://{}:{}@{}:{}/{}")
-   #     sql2 = "SELECT * from dbike.weather_Dublin;"
-        
-  #      df2 = pd.read_sql(sql2, engine)
 
-#        return df2.to_json(orient="records")
- #       json.dump(df2)
 
 #!pip3 install pickle5
 import pickle5 as pickle
@@ -70,11 +59,11 @@ def predict_available_bikes(station,predict_date,predict_time):
             model = pickle.load(handle)
             print('model',model)
             year,month,day = (int(x) for x in predict_date.split('-'))
-            hour = int(predict_time[0:2])
-            dayofweek = int(datetime.date(year,month,day).weekday())
+            hour_ = int(predict_time[0:2])
+            day = int(datetime.date(year,month,day).weekday())
             scattered_clouds = 0
             #hour = int(time[0:2])
-            test = [[dayofweek,hour,scattered_clouds]]
+            test = [[day,hour_,scattered_clouds]]
             ml = model.predict(test)
             result = round(ml[0])
             print(result)

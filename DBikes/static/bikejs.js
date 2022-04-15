@@ -15,7 +15,7 @@ function prediction() {
     })
                  
              }
- document.getElementById("id01").innerHTML = "<table><tr><th>Station Selected: </th><td>  N/A </td><th> Available Bike Stands:                  </th><td> N/A </td><th>Available Bikes:     </th><td> N/A </td></tr></table>";
+ document.getElementById("id01").innerHTML = "<table><tr><th>Station Selected: </th><td>  N/A </td><th> Available Parking Slots:                  </th><td> N/A </td><th>Available Bikes:     </th><td> N/A </td></tr></table>";
 
 
 
@@ -32,9 +32,13 @@ fetch("/weather").then(response => {
     return response.json();
     }).then(weather => {
     weather.forEach(weather => {
-        var f =weather.feels_like;
+        
+        var f =Number(weather.temp);
+        var q= f-273.15;
+        var rounded_temp_celsius = q.toFixed(); 
        // document.getElementById("weather").innerHTML=f;
-         document.getElementById("weather").innerHTML = "<table><tr><th>Temperature:     </th><td>"  +weather.temp+ "&deg;C </td><th> Humidity:  </th><td>" + weather.humidity+ "%</td><th>Windspeed:  </th><td>"+weather.wind_speed +     "km/h</td><th>Weather Description</th><td>"+weather.weather_description+"</td></tr></table>";
+        document.getElementById("weather").innerHTML = "<table><tr><th>Current Temperature:     </th><td>"  +rounded_temp_celsius+ "&deg;C </td><th> Humidity:  </th><td>" + weather.humidity+ "%</td><th>Windspeed:  </th><td>"+weather.wind_speed +     " m/s</td><th>Weather Description</th><td>"+weather.weather_description+"</td></tr></table>";
+       // document.getElementById("weather").innerHTML = f;
     
 })})
 
@@ -70,7 +74,8 @@ stationslist = []
                 var d = station.available_bikes+station.available_bike_stands
                 var q = (station.position_lat)
                 var f = (station.position_lng)
-                if (c > d/2) {
+                //code for making the green and red markers. if station more than half full marker is green
+                if (c >= d/2) {
                     var x = "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
                 }
                 else {
@@ -98,7 +103,7 @@ stationslist = []
             var space ="<br><br><br><br><br>" 
             document.getElementById("id03").innerHTML=space;
             var form = document.getElementById("Station");
-
+            //Code for station selected table
             document.getElementById("submit").addEventListener("click", function () {
             var t = "";
           //  t = "<p>'"+(station.name).selectedIndex+"'</p>" ;
@@ -106,29 +111,23 @@ stationslist = []
             var x =document.getElementById("Station").selectedIndex;
             var u = document.getElementById("Station").options;
             if (x>=1) {
-            document.getElementById("id01").innerHTML = "<table><tr><th>Station Selected:     </th><td>"+info[x-1].name+"  No ( "+info[x-1].number+" ) </td><th> Available Bike Stands:                  </th><td>"+info[x-1].available_bike_stands+"</td><th>Available Bikes:     </th><td>"+info[x-1].available_bikes+"</td></tr></table>";
+            document.getElementById("id01").innerHTML = "<table><tr><th>Station Selected:     </th><td>"+info[x-1].name+"  No ( "+info[x-1].number+" ) </td><th> Available Parking Slots:                  </th><td>"+info[x-1].available_bike_stands+"</td><th>Available Bikes:     </th><td>"+info[x-1].available_bikes+"</td></tr></table>";
             }
             else {
-                document.getElementById("id01").innerHTML="<table><tr><th>Station Selected:     </th><td> N/A </td><th> Available Bike Stands:                  </th><td>N/A</td><th>Available Bikes:     </th><td>N/A</td></tr></table>";
+                document.getElementById("id01").innerHTML="<table><tr><th>Station Selected:     </th><td> N/A </td><th> Available Parking Slots:                  </th><td>N/A</td><th>Available Bikes:     </th><td>N/A</td></tr></table>";
             }
             
                 
-            var space2 ="<br><br><br><br><br>" 
-            document.getElementById("id04").innerHTML=space2;
-            //p = "<table><th>Highest Rate Per 100,000: </th><th>Lowest Rate Per 100,000:  </th> "
-        //p+= "<tr><td>"+county_max+"</td><td>"+county_min+"</td></tr>"
-        //document.getElementById("id011").innerHTML = p
                 
 
             })
                var date = (station.last_update)
-            
+            //This is the code fot ==r markers in maps
               // var b = date.getHours()
                marker.addListener("click", () => {
                 if (clicked==false) {
                 var content= "<h3>" + station.name + " (No. " +station.number +")</h3>"
                 + "<p><b>Available Bikes: </b>" + station.available_bikes + "</p>"
-                + "<p><b>Available Stands: </b>" + station.available_bike_stands + "</p>"
                 + "<p><b>Parking Slots: </b>" + station.available_bike_stands + "</p>"
                 + "<p><b>Status: </b>" + station.status + "</p>" +"<p><b>Last Updated: </b>" + station.last_update + "</p>";
                 infowindow.setContent(content);
