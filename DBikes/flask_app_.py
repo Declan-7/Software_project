@@ -40,7 +40,7 @@ def wthr():
     engine2 = create_engine(
     f"mysql+mysqlconnector://{dbike_info.USER}:{dbike_info.PASSWORD}@{dbike_info.URI}" f":3306/{dbike_info.DB}", echo=True)
     
-    query2= "SELECT * FROM dbike.weather"
+    query2= "SELECT * FROM dbike.weather order by dt"
     df2 = pd.read_sql(query2,engine2)   
     return df2.to_json(orient="records")
     json.dump(df2)
