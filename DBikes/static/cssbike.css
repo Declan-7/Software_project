@@ -121,10 +121,10 @@ body {
         margin-left: 
         height: 3em;
         line-height: 3;
-        overflow: hidden;
         border-radius: .25em;
-        margin-right:25;
-    }
+        margin-right:25%;
+
+    } 
      
     select {
         width: 40%;

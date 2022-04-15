@@ -11,7 +11,7 @@ function prediction() {
                  
                  $.getJSON("http://127.0.0.1:5000/prediction_/" + station+ "/"+ date + "/" + time, function (id) {
                  console.log("predict");
-                 document.getElementById("prediction-bikes").innerHTML = document.getElementById("prediction-bikes").innerHTML = id+ " bikes available at Station " + station  +"  on  " +date+ " at " +time;;
+                 document.getElementById("prediction-bikes").innerHTML = document.getElementById("prediction-bikes").innerHTML = id+ " bikes will be available at Station " + station  +"  on  " +date+ " at " +time;;
     })
                  
              }
