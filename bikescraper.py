@@ -203,12 +203,14 @@ while True:
     time.sleep(5*60)
 
 # TEST CONNECTIONmetadata = sqla.MetaData(bind=engine)
-print(metadata)
-station = sqla.Table('station', metadata, autoload=True)
-print(station)
-availability = sqla.Table('availability', metadata, autoload=True)
-print(availability)import pandas as pd
-df = pd.read_sql_table("station", engine)display(df.head())sql = "select count(*) from availability;"
-print(engine.execute(sql).fetchall())sql = "select name from station limit 10;"
-for row in engine.execute(sql):
-    print(row)
+# print(metadata)
+# station = sqla.Table('station', metadata, autoload=True)
+# print(station)
+# availability = sqla.Table('availability', metadata, autoload=True)
+# print(availability)
+
+# import pandas as pd
+# df = pd.read_sql_table("station", engine)display(df.head())sql = "select count(*) from availability;"
+# print(engine.execute(sql).fetchall())sql = "select name from station limit 10;"
+# for row in engine.execute(sql):
+   #  print(row)
