@@ -28,6 +28,7 @@ function initMap() {
     zoom: 12,
   });
 }
+//fetcjing weather data. Same for fetching Station data
 fetch("/weather").then(response => {
     return response.json();
     }).then(weather => {
@@ -74,13 +75,17 @@ stationslist = []
                 var d = station.available_bikes+station.available_bike_stands
                 var q = (station.position_lat)
                 var f = (station.position_lng)
-                //code for making the green and red markers. if station more than half full marker is green
+                //code for making the green and red markers. if station more than or equal to half full marker, is green
                 if (c >= d/2) {
                     var x = "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
                 }
-                else {
+                else if (c <d/2 ){
                     var x = "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
                 }
+       
+                if (c==0)
+                    {var x = "http://maps.google.com/mapfiles/ms/icons/blue.png"
+                        }
                 const marker = new google.maps.Marker({
                 icon: {
                     url: x
