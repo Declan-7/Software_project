@@ -62,7 +62,6 @@ def predict_available_bikes(station,predict_date,predict_time):
             hour_ = int(predict_time[0:2])
             day = int(datetime.date(year,month,day).weekday())
             scattered_clouds = 0
-            #hour = int(time[0:2])
             test = [[day,hour_,scattered_clouds]]
             ml = model.predict(test)
             result = round(ml[0])
@@ -71,8 +70,7 @@ def predict_available_bikes(station,predict_date,predict_time):
      
     
 if __name__ == "__main__":
-    app.run(debug=True)
-    #app.run(debug=True, host='0.0.0.0' ,port=3306)
+    app.run(debug=True,host="0.0.0.0")
 
     
     
